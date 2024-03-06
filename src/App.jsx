@@ -8,20 +8,28 @@ import Bookings from "./pages/Bookings";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import GlobalStyles from "./styles/GlobalStyles";
+import AppLayout from "./ui/AppLayout";
 function App() {
   return (
     <>
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route index element={<Navigate replace to={"dashboard"} />} />
-          <Route path="users" element={<Users />} />
-          <Route path="account" element={<Account />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="cabins" element={<Cabins />} />
-          <Route path="bookings" element={<Bookings />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="login" element={<Login />} />
+          {/* Redirect to login */}
+
+          {/* <Route path="/" element={<Navigate replace to="login" />} />
+          <Route path="login" element={<Login />} /> */}
+
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users" element={<Users />} />
+            <Route path="account" element={<Account />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="cabins" element={<Cabins />} />
+            <Route path="bookings" element={<Bookings />} />
+          </Route>
+
           <Route path="*" element={<PageNotFound />} />
           {/* <Route path="checkin/:bookingId" element={} /> */}
         </Routes>
