@@ -1,14 +1,25 @@
-import styled from "styled-components";
-
-const H1 = styled.h1`
-  font-size: 20px;
-`;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Account from "./pages/Account";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Settings from "./pages/Settings";
+import Cabins from "./pages/Cabins";
+import Bookings from "./pages/Bookings";
 
 function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="users" element={<Users />} />
+        <Route path="account" element={<Account />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="cabins" element={<Cabins />} />
+        <Route path="bookings" element={<Bookings />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        {/* <Route path="login" element={} /> */}
+        {/* <Route path="checkin/:bookingId" element={} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
