@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
   HiOutlineCalendarDays,
+  HiOutlineChartPie,
   HiOutlineCog6Tooth,
-  HiOutlineHome,
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
@@ -58,8 +58,8 @@ function MainNav() {
       <NavList>
         <li>
           <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Home</span>
+            <HiOutlineChartPie />
+            <span>Dashboard</span>
           </StyledNavLink>
         </li>
 
