@@ -7,6 +7,7 @@ import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Cabins() {
   const [showForm, setShowForm] = useState(false);
+
   return (
     <>
       <Row>

@@ -5,18 +5,30 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createCabin } from "../../services/apiCabins";
+import { createEditCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
 
-function CreateCabinForm() {
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(editId);
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
   const queryClient = useQueryClient();
   const { errors } = formState;
 
-  const { mutate } = useMutation({
-    mutationFn: (newCabin) => createCabin(newCabin),
-    onError: (err) => toast.error(err.message),
+  const { mutate: createCabin } = useMutation({
+    mutationFn: (newCabin) => createEditCabin(newCabin),
+    onError: handleError,
+    onSuccess: handleSuccess,
+  });
+
+  const { mutate: updateMutate } = useMutation({
+    mutationFn: ({ newCabinData, id }) => {
+      createEditCabin(newCabinData, id);
+    },
+    onError: handleError,
     onSuccess: handleSuccess,
   });
 
@@ -24,12 +36,27 @@ function CreateCabinForm() {
     queryClient.invalidateQueries({
       queryKey: ["cabins"],
     });
-    toast.success("New cabin succesfully created!");
+    toast.success(
+      `${
+        isEditSession
+          ? "Cabin succesfully edited!"
+          : "New cabin succesfully created!"
+      }`
+    );
     reset();
   }
+  function handleError(err) {
+    toast.error(err.message);
+  }
 
-  function onSubmit(newCabin) {
-    mutate({ ...newCabin, image: newCabin.image[0].name });
+  function onSubmit(data) {
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
+    if (isEditSession)
+      updateMutate({ newCabinData: { ...data, image }, id: editId });
+    else {
+      createCabin({ ...data, image });
+    }
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -103,7 +130,7 @@ function CreateCabinForm() {
           id="image"
           accept="image/*"
           {...register("image", {
-            required: "This field is required",
+            required: isEditSession ? false : "This field is required",
           })}
         />
       </FormRow>
@@ -112,7 +139,7 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Edit cabin</Button>
+        <Button>{isEditSession ? "Edit" : "Create"} Cabin</Button>
       </FormRow>
     </Form>
   );
