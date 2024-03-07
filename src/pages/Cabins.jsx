@@ -10,9 +10,7 @@ function Cabins() {
         <p>filter/sort</p>
       </Row>
 
-      <Row>
-        <CabinTable></CabinTable>
-      </Row>
+      <CabinTable></CabinTable>
     </>
   );
 }

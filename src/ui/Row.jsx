@@ -7,7 +7,7 @@ const Row = styled.div`
     props.orientation === "horizontal"
       ? css`
           justify-content: space-between;
-          align-items: "center";
+          align-items: center;
         `
       : css`
           flex-direction: column;
