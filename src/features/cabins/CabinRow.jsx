@@ -6,6 +6,7 @@ import CreateCabinForm from "../cabins/CreateCabinForm";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useDeleteCabin } from "./useDeleteCabin";
+import { useCreateCabin } from "./useCreateCabin copy";
 
 const TableRow = styled.div`
   display: grid;
@@ -56,9 +57,20 @@ function CabinRow({ cabin }) {
   const { id, discount, image, name, regularPrice, maxCapacity } = cabin;
 
   const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isCreating: isDuplicating, createCabin: duplicateCabin } =
+    useCreateCabin();
 
   function handleDeleteClick() {
     deleteCabin(id);
+  }
+  function handleDuplicateClick() {
+    duplicateCabin({
+      name: `${name} Copy`,
+      discount,
+      image,
+      regularPrice,
+      maxCapacity,
+    });
   }
 
   return (
@@ -68,8 +80,11 @@ function CabinRow({ cabin }) {
         <Cabin>{name}</Cabin>
         <Capacity>Fits up to {maxCapacity} guests</Capacity>
         <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
+        <Discount>{discount ? formatCurrency(discount) : "-"}</Discount>
         <div>
+          <button onClick={handleDuplicateClick}>
+            {isDuplicating ? "Duplicationg..." : "Duplicate"}
+          </button>
           <button onClick={() => setShowForm((show) => !show)}>Edit</button>
           <button onClick={handleDeleteClick}>
             {isDeleting ? "Deleting..." : "Delete"}
