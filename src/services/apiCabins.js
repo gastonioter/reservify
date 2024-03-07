@@ -14,3 +14,15 @@ export async function deleteCabin(id) {
 
   return data;
 }
+
+export async function createCabin(cabin) {
+  console.log(cabin);
+  const { data, error } = await supabase
+    .from("cabins")
+    .insert([cabin])
+    .select();
+
+  if (error) throw new Error(`Error creating new cabin`);
+
+  return data;
+}
