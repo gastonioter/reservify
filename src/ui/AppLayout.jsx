@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 const MainStyled = styled.main`
   padding: 4rem 4.8rem 6.4rem;
+  overflow: scroll;
+  background-color: var(--color-grey-50);
 `;
 
 const GridContainer = styled.div`
@@ -12,7 +14,6 @@ const GridContainer = styled.div`
   grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
-  background-color: var(--color-grey-50);
 `;
 
 const Container = styled.div`
