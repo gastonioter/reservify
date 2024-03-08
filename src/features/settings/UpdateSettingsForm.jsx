@@ -21,7 +21,6 @@ function UpdateSettingsForm() {
 
   const { register, formState } = useForm();
   const { errors } = formState;
-  console.log(formState.errors);
 
   function handleUpdate(e, settingToUpdate) {
     const newValue = e.target.value;

@@ -24,7 +24,8 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.2",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "vest": "^5.2.10"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.20.1",
