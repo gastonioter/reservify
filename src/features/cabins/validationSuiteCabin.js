@@ -4,7 +4,7 @@ const suite = create((cabin) => {
   //mode('edge');
   test("name", () => {
     enforce(cabin.name)
-      .message("Name is required!")
+      .message("This filed is required")
       .isNotEmpty()
       .message("The name must be less than 255 characters")
       .shorterThan(255)
@@ -14,7 +14,7 @@ const suite = create((cabin) => {
 
   test("maxCapacity", () => {
     enforce(cabin.maxCapacity)
-      .message("The max capacity is required!")
+      .message("This filed is required")
       .isNotEmpty()
       .message("The max capacity must be a number")
       .isNumeric()
@@ -24,7 +24,7 @@ const suite = create((cabin) => {
 
   test("regularPrice", () => {
     enforce(cabin.regularPrice)
-      .message("The price is required!")
+      .message("This filed is required")
       .isNotEmpty()
       .message("The price must be a number")
       .isNumeric()
@@ -35,7 +35,7 @@ const suite = create((cabin) => {
 
   test("discount", () => {
     enforce(cabin.discount)
-      .message("The discount must be a number")
+      .message("This filed is required")
       .isNumeric()
 
       .message("The discount can not be negative")
@@ -46,7 +46,7 @@ const suite = create((cabin) => {
   });
   test("description", () => {
     enforce(cabin.description)
-      .message("The description is required!")
+      .message("This filed is required")
       .isNotEmpty();
   });
 
