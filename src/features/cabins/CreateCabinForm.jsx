@@ -4,10 +4,11 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
-
+import { vestResolver } from "@hookform/resolvers/vest";
 import FormRow from "../../ui/FormRow";
 import { useCreateCabin } from "./useCreateCabin copy";
 import { useEditCabin } from "./useEditCabin";
+import suite from "./validationSuiteCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
@@ -18,11 +19,12 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   const { isCreating, createCabin } = useCreateCabin();
 
   // react form hooks
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
+  const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
+    resolver: vestResolver(suite),
   });
-  const { errors } = formState;
 
+  const { errors } = formState;
   // event handlers
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
@@ -45,79 +47,34 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Name" error={errors?.name?.message}>
-        <Input
-          type="text"
-          id="name"
-          {...register("name", {
-            required: "This field is required",
-            maxLength: {
-              value: 255,
-              message: "The name is too large",
-            },
-          })}
-        />
+      <FormRow label="Name" error={suite.get().getError("name")}>
+        <Input type="text" id="name" {...register("name")} />
       </FormRow>
 
-      <FormRow label="Max Capacity" error={errors?.maxCapacity?.message}>
-        <Input
-          type="number"
-          id="maxCapacity"
-          {...register("maxCapacity", {
-            required: "This field is required",
-            min: {
-              value: 1,
-              message: "The capacity must be 1 at least",
-            },
-          })}
-        />
+      <FormRow label="Max Capacity" error={suite.get().getError("maxCapacity")}>
+        <Input id="maxCapacity" {...register("maxCapacity")} />
       </FormRow>
 
-      <FormRow label="Regular Price" error={errors?.regularPrice?.message}>
-        <Input
-          type="number"
-          id="regularPrice"
-          {...register("regularPrice", {
-            required: "This field is required",
-            min: {
-              value: 0,
-              message: "The price must be grather than $0",
-            },
-          })}
-        />
+      <FormRow
+        label="Regular Price"
+        error={suite.get().getError("regularPrice")}
+      >
+        <Input id="regularPrice" {...register("regularPrice")} />
       </FormRow>
 
-      <FormRow label="Discount" error={errors?.discount?.message}>
-        <Input
-          type="number"
-          id="discount"
-          defaultValue={0}
-          {...register("discount", {
-            required: "This field is required",
-            validate: (discount) =>
-              +discount <= +getValues().regularPrice ||
-              "The discount must be less than price",
-          })}
-        />
+      <FormRow label="Discount" error={suite.get().getError("discount")}>
+        <Input id="discount" defaultValue={0} {...register("discount")} />
       </FormRow>
 
-      <FormRow label="Description">
-        <Textarea
-          type="number"
-          id="description"
-          defaultValue=""
-          {...register("description")}
-        />
+      <FormRow
+        label="Description for the Website"
+        error={suite.get().getError("description")}
+      >
+        <Textarea id="description" {...register("description")} />
       </FormRow>
 
-      <FormRow label="Image">
-        <FileInput
-          id="image"
-          accept="image/*"
-          {...register("image", {
-            required: isEditSession ? false : "This field is required",
-          })}
-        />
+      <FormRow label="Image" error={suite.get().getError("image")}>
+        <FileInput id="image" accept="image/*" {...register("image")} />
       </FormRow>
 
       <FormRow>
