@@ -18,20 +18,20 @@ function UpdateSettingsForm() {
   } = useFetchSettings();
 
   const { isUpdating, updateSettings } = useUpdateSettings();
-  const { register, handleSubmit, formState } = useForm();
+
+  const { register, formState } = useForm();
   const { errors } = formState;
-  console.log(errors);
-  function onSuccess(data) {
-    console.log(data);
-  }
+  console.log(formState.errors);
 
   function handleUpdate(e, settingToUpdate) {
     const newValue = e.target.value;
     updateSettings({ [settingToUpdate]: newValue });
   }
+
   if (isLoading) return <Spinner />;
+
   return (
-    <Form onSubmit={handleSubmit(onSuccess)}>
+    <Form>
       <FormRow
         label="Minimum nights/booking"
         error={errors?.minBookingLength?.message}
@@ -39,14 +39,9 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="minBookingLength"
-          {...register("minBookingLength", {
-            required: "requerido",
-            min: {
-              value: 1,
-              message: "Invalid value. Must be 1 at least",
-            },
-          })}
+          {...register("minBookingLength")}
           defaultValue={minBookingLength}
+          disabled={isUpdating}
           onBlur={(e) => handleUpdate(e, "minBookingLength")}
         />
       </FormRow>
@@ -55,6 +50,7 @@ function UpdateSettingsForm() {
           type="number"
           id="maxBookingLength"
           {...register("maxBookingLength")}
+          disabled={isUpdating}
           defaultValue={maxBookingLength}
           onBlur={(e) => handleUpdate(e, "maxBookingLength")}
         />
@@ -65,6 +61,7 @@ function UpdateSettingsForm() {
           id="maxGuestsPerBooking"
           {...register("maxGuestsPerBooking")}
           defaultValue={maxGuestsPerBooking}
+          disabled={isUpdating}
           onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
         />
       </FormRow>
@@ -73,6 +70,7 @@ function UpdateSettingsForm() {
           type="number"
           id="breakfastPrice"
           {...register("breakfastPrice")}
+          disabled={isUpdating}
           defaultValue={breakfastPrice}
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
           defa
