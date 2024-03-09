@@ -1,22 +1,19 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
+
 import CreateCabinForm from "../cabins/CreateCabinForm";
-import toast from "react-hot-toast";
-import { useState } from "react";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { useCreateCabin } from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import { HiDocumentDuplicate, HiPencil, HiTrash } from "react-icons/hi2";
-import Heading from "../../ui/Heading";
-import Row from "../../ui/Row";
 import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../ui/Table";
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  /* grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr; */
+  grid-template-columns: repeat(7, 1fr);
   column-gap: 2.4rem;
   align-items: center;
   padding: 1.4rem 2.4rem;
@@ -70,61 +67,57 @@ function CabinRow({ cabin }) {
   const { deleteCabin, isDeleting } = useDeleteCabin();
 
   return (
-    <>
-      <TableRow role="row">
-        <Img src={image} alt={name} />
-        <Cabin>{name}</Cabin>
-        <Capacity>Fits up to {maxCapacity} guests</Capacity>
-        <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{discount ? formatCurrency(discount) : "-"}</Discount>
+    <Table.Row role="row">
+      <Img src={image} alt={name} />
+      <Cabin>{name}</Cabin>
+      <Capacity>Fits up to {maxCapacity} guests</Capacity>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>{discount ? formatCurrency(discount) : "-"}</Discount>
 
-        <Actions>
-          <Modal>
-            {/* Modal for DELETE */}
-            <Modal.Open opens="delete">
-              <Button size="small">
-                <HiTrash />
-              </Button>
-            </Modal.Open>
-            <Modal.Window name="delete">
-              <ConfirmDelete
-                onDelete={() => deleteCabin(id)}
-                disabled={isDeleting}
-                resourceName={`Cabin ${name}`}
-              />
-            </Modal.Window>
+      <Actions>
+        <Modal>
+          {/* Modal for DELETE */}
+          <Modal.Open opens="delete">
+            <Button size="small">
+              <HiTrash />
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              onDelete={() => deleteCabin(id)}
+              disabled={isDeleting}
+              resourceName={`Cabin ${name}`}
+            />
+          </Modal.Window>
 
-            {/* Modal for UPDATE */}
-            <Modal.Open opens="edit">
-              <Button size="small">
-                <HiPencil />
-              </Button>
-            </Modal.Open>
-            <Modal.Window name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
-          </Modal>
+          {/* Modal for UPDATE */}
+          <Modal.Open opens="edit">
+            <Button size="small">
+              <HiPencil />
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
+        </Modal>
 
-          <Button
-            size="small"
-            onClick={() =>
-              duplicateCabin({
-                name: `Copy of ${name}`,
-                discount,
-                image,
-                regularPrice,
-                maxCapacity,
-              })
-            }
-            disabled={isDuplicating}
-          >
-            <HiDocumentDuplicate />
-          </Button>
-        </Actions>
-      </TableRow>
-
-      {/* {showForm && <CreateCabinForm cabinToEdit={cabin} />} */}
-    </>
+        <Button
+          size="small"
+          onClick={() =>
+            duplicateCabin({
+              name: `Copy of ${name}`,
+              discount,
+              image,
+              regularPrice,
+              maxCapacity,
+            })
+          }
+          disabled={isDuplicating}
+        >
+          <HiDocumentDuplicate />
+        </Button>
+      </Actions>
+    </Table.Row>
   );
 }
 
