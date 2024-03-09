@@ -72,7 +72,6 @@ function UpdateSettingsForm() {
           disabled={isUpdating}
           defaultValue={breakfastPrice}
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
-          defa
         />
       </FormRow>
     </Form>
