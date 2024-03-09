@@ -10,6 +10,7 @@ import {
 } from "react";
 import Button from "./Button";
 import { useRef } from "react";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const Overlay = styled.div`
   position: fixed;
@@ -75,37 +76,11 @@ function Modal({ children }) {
 
 function Window({ children, name }) {
   const { windowOpen, close } = useContext(ModalContext);
-  const ref = useRef();
-
-  function handleClickOutside(e) {
-    if (e.target.id === "overlay") {
-      console.log("out");
-      console.log(e.target.id);
-      close();
-    }
-  }
-
-  useEffect(
-    function () {
-      if (!ref.current) return;
-
-      const current = ref.current;
-      const handleClickOutside = (e) => {
-        if (e.target === current) {
-          close();
-        }
-      };
-
-      current.addEventListener("click", handleClickOutside);
-
-      return () => current.removeEventListener("click", handleClickOutside);
-    },
-    [close]
-  );
+  const { ref } = useClickOutside(close);
 
   if (name === windowOpen) {
     return createPortal(
-      <Overlay onClick={handleClickOutside} ref={ref}>
+      <Overlay ref={ref}>
         <StyledModal>
           <CloseButton onClick={close}>
             <HiXMark />
