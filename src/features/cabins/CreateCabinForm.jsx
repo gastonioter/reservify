@@ -90,7 +90,10 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
         <Button
           variation="secondary"
           type="reset"
-          onClick={() => onCloseModal?.()}
+          onClick={() => {
+            onCloseModal?.();
+            suite.reset();
+          }}
         >
           Cancel
         </Button>

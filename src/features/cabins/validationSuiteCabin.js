@@ -36,6 +36,8 @@ const suite = create((cabin) => {
   test("discount", () => {
     enforce(cabin.discount)
       .message("This filed is required")
+      .isNotEmpty()
+      .message("Discount must be a number")
       .isNumeric()
 
       .message("The discount can not be negative")
@@ -45,9 +47,7 @@ const suite = create((cabin) => {
       .lessThanOrEquals(cabin.regularPrice || 0);
   });
   test("description", () => {
-    enforce(cabin.description)
-      .message("This filed is required")
-      .isNotEmpty();
+    enforce(cabin.description).message("This filed is required").isNotEmpty();
   });
 
   test("image", () => {
