@@ -6,7 +6,7 @@ import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import { vestResolver } from "@hookform/resolvers/vest";
 import FormRow from "../../ui/FormRow";
-import { useCreateCabin } from "./useCreateCabin copy";
+import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 import suite from "./validationSuiteCabin";
 

@@ -1,15 +1,8 @@
 import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { createPortal } from "react-dom";
-import {
-  cloneElement,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import Button from "./Button";
-import { useRef } from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
+
 import { useClickOutside } from "../hooks/useClickOutside";
 
 const Overlay = styled.div`

@@ -9,13 +9,12 @@ export async function getCabins() {
 export async function deleteCabin(id) {
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
 
-  if (error) throw new Error(`Error deleting cabin ${id}`);
+  if (error) throw new Error(`Sorry, we could not delete the cabin`);
 
   return data;
 }
 
 export async function createEditCabin(cabin, id = null) {
-  console.log(cabin);
   const hasImgPath = cabin.image.startsWith?.(supabaseUrl);
 
   // Create Path img
@@ -32,7 +31,7 @@ export async function createEditCabin(cabin, id = null) {
 
   const { data, error } = await query.select().single();
 
-  if (error) throw new Error(`Error creating new cabin`);
+  if (error) throw new Error(`Sorry, the cabin couldn't be created`);
 
   // Upload Image
   if (hasImgPath) data;
