@@ -1,7 +1,7 @@
 import supabase, { supabaseUrl } from "./supabase";
 export async function getCabins() {
   const { data, error } = await supabase.from("cabins").select();
-  if (error) throw new Error("Error fetching cabins");
+  if (error) throw new Error("Sorry, we could'n get the cabins");
 
   return data;
 }

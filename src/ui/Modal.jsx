@@ -69,12 +69,11 @@ function Modal({ children }) {
 
 function Window({ children, name }) {
   const { windowOpen, close } = useContext(ModalContext);
-  const { ref } = useClickOutside(close);
-
+  const ref = useClickOutside(close);
   if (name === windowOpen) {
     return createPortal(
-      <Overlay ref={ref}>
-        <StyledModal>
+      <Overlay>
+        <StyledModal ref={ref}>
           <CloseButton onClick={close}>
             <HiXMark />
           </CloseButton>
@@ -88,7 +87,9 @@ function Window({ children, name }) {
 
 function Open({ children, opens }) {
   const { open } = useContext(ModalContext);
-  return cloneElement(children, { onClick: () => open(opens) });
+  return cloneElement(children, {
+    onClick: () => open(opens),
+  });
 }
 
 Modal.Window = Window;

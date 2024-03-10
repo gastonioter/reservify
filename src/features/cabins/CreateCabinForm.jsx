@@ -92,7 +92,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           type="reset"
           onClick={() => {
             onCloseModal?.();
-            suite.reset();
+            suite.reset(); 
           }}
         >
           Cancel

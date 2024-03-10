@@ -60,12 +60,15 @@ const Empty = styled.p`
 
 const TableContext = createContext();
 
-function Table({ columns, children }) {
-  // if (!data.isArray() || data.length == 0) return;
-  // if (columns.split(" ").lenth !== Object.keys(data.at(0))) return;
+function Table({ columns, children, data }) {
+  if (!Array.isArray(data)) {
+    console.error("The data provided must be an array of objects");
+    return null;
+  }
+  // if (columns.split(" ").length !== Object.keys(data.at(0)).length) return null;
 
   return (
-    <TableContext.Provider value={{ columns }}>
+    <TableContext.Provider value={{ columns, data }}>
       <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
@@ -89,8 +92,10 @@ function Row({ children }) {
   return <StyledRow columns={columns}>{children}</StyledRow>;
 }
 
-function Body({ render, data }) {
-  if (!data) return <Empty>No data to show.</Empty>;
+function Body({ render }) {
+  const { data } = useContext(TableContext);
+
+  if (data.length === 0) return <Empty>No data to show.</Empty>;
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
 import Row from "./Row";
-import { useDeleteCabin } from "../features/cabins/useDeleteCabin";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;

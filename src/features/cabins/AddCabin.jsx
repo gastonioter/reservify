@@ -1,8 +1,11 @@
 import CreateCabinForm from "../cabins/CreateCabinForm";
 import Modal from "../../ui/Modal";
 import Button from "../../ui/Button";
+import { useFetchCabins } from "./useFetchCabins";
 
 function AddCabin() {
+  const { isLoading } = useFetchCabins();
+  if (isLoading) return null;
   return (
     <div>
       <Modal>

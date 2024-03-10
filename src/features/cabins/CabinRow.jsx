@@ -9,19 +9,7 @@ import { HiDocumentDuplicate, HiPencil, HiTrash } from "react-icons/hi2";
 import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-
-const TableRow = styled.div`
-  display: grid;
-  /* grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr; */
-  grid-template-columns: repeat(7, 1fr);
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+import Menus from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -66,6 +54,16 @@ function CabinRow({ cabin }) {
     useCreateCabin();
   const { deleteCabin, isDeleting } = useDeleteCabin();
 
+  function handleDuplicate() {
+    duplicateCabin({
+      name: `Copy of ${name}`,
+      discount,
+      image,
+      regularPrice,
+      maxCapacity,
+    });
+  }
+
   return (
     <Table.Row role="row">
       <Img src={image} alt={name} />
@@ -76,46 +74,40 @@ function CabinRow({ cabin }) {
 
       <Actions>
         <Modal>
-          {/* Modal for DELETE */}
-          <Modal.Open opens="delete">
-            <Button size="small">
-              <HiTrash />
-            </Button>
-          </Modal.Open>
-          <Modal.Window name="delete">
-            <ConfirmDelete
-              onDelete={() => deleteCabin(id)}
-              disabled={isDeleting}
-              resourceName={`Cabin ${name}`}
-            />
-          </Modal.Window>
+          <Menus.Menu>
+            <Menus.Toggle id={id} />
 
-          {/* Modal for UPDATE */}
-          <Modal.Open opens="edit">
-            <Button size="small">
-              <HiPencil />
-            </Button>
-          </Modal.Open>
-          <Modal.Window name="edit">
-            <CreateCabinForm cabinToEdit={cabin} />
-          </Modal.Window>
+            <Menus.List id={id}>
+              <Menus.Button
+                icon={<HiDocumentDuplicate />}
+                onClick={handleDuplicate}
+              >
+                Duplicate
+              </Menus.Button>
+
+              <Modal.Open opens="cabin-update">
+                <Menus.Button icon={<HiPencil />}>Update</Menus.Button>
+              </Modal.Open>
+
+              <Modal.Open opens="cabin-delete">
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+
+            <Modal.Window name="cabin-update">
+              <CreateCabinForm cabinToEdit={cabin} />
+            </Modal.Window>
+
+            <Modal.Window name="cabin-delete">
+              <ConfirmDelete
+                resourceName="cabins"
+                disabled={isDeleting}
+                onDelete={() => deleteCabin(id)}
+              />
+            </Modal.Window>
+            
+          </Menus.Menu>
         </Modal>
-
-        <Button
-          size="small"
-          onClick={() =>
-            duplicateCabin({
-              name: `Copy of ${name}`,
-              discount,
-              image,
-              regularPrice,
-              maxCapacity,
-            })
-          }
-          disabled={isDuplicating}
-        >
-          <HiDocumentDuplicate />
-        </Button>
       </Actions>
     </Table.Row>
   );
